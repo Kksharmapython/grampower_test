@@ -1,0 +1,239 @@
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+        crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<style>
+	   table, th, td {
+  border: 2px solid black
+}
+
+
+
+
+
+
+
+
+
+
+</style>
+<div class="mt-5 row row-cols-lg-3 row-cols-md-2 row-cols-1 text-center justify-content-center px-xl-6 aos-init aos-animate">
+    <div class="col-sm-2">
+        <button class="rightbottom "><a href="{% url 'auth_login' %}">Back</a>
+        </button>
+    </div>
+    <div class=" col-sm-8">
+        <h1>Device Detail (when you update values from admin data will be update without refresh page)</h1></div>
+    <div class="col-sm-2">
+        <button class="rightbottom "><a href="{% url 'logout_a' %}">Logout</a>
+        </button>
+    </div>
+</div>
+
+
+<div class="mt-5  row  justify-content-center ">
+    <div class="col col-sm-1"></div>
+    <div class="col col-sm-4">
+        <table class="table" style="border-spacing: 30px; width:500px; border-collapse:collapse;">
+
+            <tbody>
+            <tr>
+                <th scope="row">Device Name</th>
+                <td>{{device.name}}</td>
+
+            </tr>
+            <tr>
+                <th scope="row">Device Id</th>
+                <td>{{device.public_id}}</td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col col-sm-4 ">
+        <table class="table" style="width:500px; border-collapse:collapse;">
+
+            <tbody>
+            <tr>
+                <th scope="row">Device Status</th>
+                <td>{{device.status}}</td>
+
+            </tr>
+            <tr>
+                <th scope="row">Last Data Point</th>
+                <td>{{last_data_point}}</td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col col-sm-1"></div>
+</div>
+
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 text-center justify-content-center px-xl-6 aos-init aos-animate"
+     data-aos="fade-up">
+    <div class="col col-sm-2 my-3 "></div>
+    <div class="col col-sm-3 my-3 ">
+        <div class="border border-dark 	card-body" style="border-radius: 25%; width: 50%; ">
+            <div class="mb-5">
+                <h4>
+                    Average Current
+                </h4>
+                <p id="chat-log">{{avg_current}}</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="col col-sm-3 my-3 ">
+        <div class="border border-dark 	card-body" style="border-radius: 25%; width: 50%; ">
+            <div class="mb-5">
+                <h4>
+                    Average Voltage
+                </h4>
+                <p>{{avg_voltage}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col col-sm-3 my-3 ">
+        <div class="border border-dark card-body" style="border-radius: 25%; width: 50%; ">
+            <div class="mb-5">
+                <h4>
+                    Total Consumption
+                </h4>
+                <p>{{total_consmp}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col col-sm-1 my-3"></div>
+</div>
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 text-center justify-content-center px-xl-6 aos-init aos-animate"
+     data-aos="fade-up">
+    <div class="col col-sm-2 my-3 "></div>
+    <div class="col col-sm-3 my-3 ">
+        <div style="width: 50%; ">
+            <div class="mb-5">
+                <h4>
+                    apparent_power_VA
+                </h4>
+                <input type="input" name="apparent_power_VA" id="apparent_power_VA" value="">
+            </div>
+        </div>
+
+    </div>
+    <div class="col col-sm-3 my-3 ">
+        <div style="width: 50%; ">
+            <div class="mb-5">
+                <h4>
+                    active_power_W
+                </h4>
+                <input type="input" name="active_power_W" id="active_power_W" value="">
+
+            </div>
+        </div>
+    </div>
+    <div class="col col-sm-3 my-3 ">
+        <div style="width: 50%; ">
+            <div class="mb-5">
+                <h4>
+                    active_energy_Wh
+                </h4>
+                <input type="input" name="active_energy_Wh" id="active_energy_Wh" value="">
+
+            </div>
+        </div>
+    </div>
+    <div class="col col-sm-1 my-3"></div>
+</div>
+
+<div id="myPlot" style="width:100%;max-width:700px"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js"
+        integrity="sha512-oHBLR38hkpOtf4dW75gdfO7VhEKg2fsitvHZYHZjObc4BPKou2PGenyxA5ZJ8CCqWytBx5wpiSqwVEBy84b7tw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<!--<script>-->
+<!--    var exp1 = "x";-->
+<!--    var exp2 = "1.5*x";-->
+<!--    var exp3 = "1.5*x + 7";-->
+<!--    // Generate values-->
+
+<!--    var x1Values = [];-->
+<!--    var y1Values = [];-->
+
+
+<!--    for (var x = 0; x <= 10; x += 1) {-->
+<!--      x1Values.push(x);-->
+<!--      y1Values.push(eval(exp1));-->
+
+<!--    }-->
+
+<!--    // Define Data-->
+<!--    var data = [-->
+<!--      {x: x1Values, y: y1Values, mode:"lines"},-->
+<!--    ];-->
+
+<!--    //Define Layout-->
+<!--    var layout = {title: "[y=" + exp1 + "]  [y=" + exp2 + "]  [y=" + exp3 + "]"};-->
+
+<!--    // Display using Plotly-->
+<!--    Plotly.newPlot("myPlot", data, layout);-->
+
+<!--</script>-->
+<script>
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/live_data/'
+        + '{{"ok"}}'
+        + '/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const datac = JSON.parse(e.data);
+
+<!--           document.querySelector('#apparent_power_VA').value = (data.message["apparent_power_VA"] + '\n');-->
+<!--           document.querySelector('#active_power_W').value = (data.message["c"] + '\n');-->
+<!--           document.querySelector('#active_energy_Wh').value = (data.message["active_energy_Wh"] + '\n');-->
+<!--           -->
+           var date_time= [];
+            var active_power_W = [];
+
+    console.log(datac.message)
+    var msg = datac.message
+    for (var x = 0; x < msg.length; x += 1) {
+      active_power_W.push(datac.message[x]["active_power_W"]);
+      date_time.push(datac.message[x]["meter_time"]);
+
+    }
+
+
+    // Define Data
+    var data = [
+      {y: active_power_W, x: date_time, mode:"lines"},
+    ];
+
+    //Define Layout
+
+    // Display using Plotly
+    Plotly.newPlot("myPlot", data);
+
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+
+
+
+
+
+
+
+
+
+</script>
